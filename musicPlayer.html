@@ -36,7 +36,10 @@
                 <div class="player_con" :class="{playing:isPlaying}">
                     <img src="images/player_bar.png" class="play_bar" />
                     <img src="images/disc.png" class="disc autoRotate" />
-                    <img :src="coverUrl==''?' images/cover.png' :coverUrl" class="cover autoRotate" />
+                    <!--<img :src="coverUrl==''?' images/cover.png' :musicCover" class="cover autoRotate" />-->
+                    <img :src="musicCover" class="cover autoRotate" />
+                    <p class="lrc1" v-show="isPlaying">{{lrc1}}</p>
+                    <p class="lrc2" v-show="isPlaying">{{lrc2}}</p>
                 </div>
                 <!--评论容器-->
                 <div class="comment_wrapper" ref='comment_wrapper'>
@@ -56,7 +59,7 @@
                 </div>
             </div>
             <div class="audio_con">
-        <audio ref='audio' @play="play" @pause="pause" :src="musicUrl" controls autoplay loop class="myaudio"></audio>     
+        <audio id="myaudio" ref='audio' @play="play" @pause="pause" @ :src="musicUrl" controls="controls" autoplay  loop class="myaudio" ></audio>     
         </div>
         <div class="video_con" v-show="showVideo">
             <video ref='video' :src="mvUrl" controls="controls"></video>

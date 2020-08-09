@@ -18,7 +18,7 @@ dd {
 
 .play_wrap {
   width: 800px;
-  height: 500px;
+  height: 540px;
   position: fixed;
   left: 50%;
   top: 45%;
@@ -162,6 +162,24 @@ dd {
   left: 200px;
   top: 0px;
 }
+
+.player_con .lrc1 {
+    position: absolute;
+    top: 350px;
+    left: 10px;
+    display: flex;
+    font-weight: bold;
+    color: #1eacda;
+  }
+
+  .player_con .lrc2 {
+    position: absolute;
+    top: 380px;
+    right:10px;
+    display: flex;
+    font-weight: bold;
+    color: #1eacda;
+  }
 
 .player_con2 {
   width: 400px;
