@@ -15,7 +15,10 @@
             <!--搜索区域-->
             <div class="search_bar">
                 <img src="images/player_title.png" alt="" />
-                <input type="text" autocomplete="on" v-model='query' @keyup.enter="searchMusic()" />
+                <input type="text" autocomplete="on" list="url_list" v-model='query' @keyup.enter="searchMusic()" />
+                <datalist id="url_list">
+                    <option v-for="(item,index) in searchHistory"> {{item}}</option> 
+                </datalist>
             </div>
             <!-- 内容显示区域-->
             <div class="center_content">
