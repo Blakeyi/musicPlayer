@@ -54,6 +54,25 @@ dd {
   outline: none;
 }
 
+.search_bar li {
+    font-size: 12px;
+    color: #333;
+    height: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 580px;
+    padding-left: 10px;
+  }
+
+  .search_bar li b {
+    font-weight: normal;
+    width: 122px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
 .center_content {
   height: 445px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -169,7 +188,7 @@ dd {
     left: 10px;
     display: flex;
     font-weight: bold;
-    color: #1eacda;
+    color: #f1f3f4;
   }
 
   .player_con .lrc2 {
@@ -178,7 +197,7 @@ dd {
     right:10px;
     display: flex;
     font-weight: bold;
-    color: #1eacda;
+    color: #f1f3f4;
   }
 
 .player_con2 {

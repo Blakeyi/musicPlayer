@@ -15,7 +15,7 @@
             <!--搜索区域-->
             <div class="search_bar">
                 <img src="images/player_title.png" alt="" />
-                <input type="text" autocomplete="off" v-model='query' @keyup.enter="searchMusic()" />
+                <input type="text" autocomplete="on" v-model='query' @keyup.enter="searchMusic()" />
             </div>
             <!-- 内容显示区域-->
             <div class="center_content">
@@ -38,8 +38,8 @@
                     <img src="images/disc.png" class="disc autoRotate" />
                     <!--<img :src="coverUrl==''?' images/cover.png' :musicCover" class="cover autoRotate" />-->
                     <img :src="musicCover" class="cover autoRotate" />
-                    <p class="lrc1" v-show="isPlaying">{{lrc1}}</p>
-                    <p class="lrc2" v-show="isPlaying">{{lrc2}}</p>
+                    <font id="lrc1" class="lrc1" v-show="isPlaying"></font>
+                    <font id="lrc2" class="lrc2" v-show="isPlaying"></font>
                 </div>
                 <!--评论容器-->
                 <div class="comment_wrapper" ref='comment_wrapper'>
