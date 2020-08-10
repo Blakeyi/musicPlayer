@@ -55,42 +55,42 @@ dd {
 }
 
 .search_bar li {
-    font-size: 12px;
-    color: #333;
-    height: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 580px;
-    padding-left: 10px;
-  }
+  font-size: 12px;
+  color: #333;
+  height: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 580px;
+  padding-left: 10px;
+}
 
-  .search_bar li b {
-    font-weight: normal;
-    width: 122px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+.search_bar li b {
+  font-weight: normal;
+  width: 122px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-  input::-webkit-calendar-picker-indicator{
-	display: none;
-	-webkit-appearance: none;
-  }
-  option {
-      background-color: aqua;
-  }
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-  }
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
+input::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+option {
+  background-color: aqua;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 .center_content {
   height: 445px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -122,8 +122,8 @@ dd {
 }
 
 .song_list::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
 
 .song_list li {
   font-size: 12px;
@@ -135,7 +135,7 @@ dd {
   width: 580px;
   padding-left: 10px;
 }
-
+/*奇数行显示不一样的方法*/
 .song_list li:nth-child(odd) {
   background-color: rgba(240, 240, 240, 0.3);
 }
@@ -201,45 +201,78 @@ dd {
 }
 
 .player_con .lrc1 {
-    position: absolute;
-    top: 350px;
-    left: 10px;
-    display: flex;
-    font-weight: bold;
-    color: #f1f3f4;
-  }
-
-  .player_con .lrc2 {
-    position: absolute;
-    top: 380px;
-    right:10px;
-    display: flex;
-    font-weight: bold;
-    color: #f1f3f4;
-  }
-
-.player_con2 {
-  width: 400px;
-  height: 435px;
   position: absolute;
-  left: 200px;
-  top: 0px;
+  top: 350px;
+  left: 10px;
+  display: flex;
+  font-weight: bold;
+  color: #f1f3f4;
 }
 
-.player_con2 video {
+.player_con .lrc2 {
   position: absolute;
-  left: 20px;
-  top: 30px;
-  width: 355px;
-  height: 265px;
+  top: 380px;
+  right: 10px;
+  display: flex;
+  font-weight: bold;
+  color: #f1f3f4;
 }
 
+.player_con1 {
+    width: 400px;
+    height: 435px;
+    position: absolute;
+    left: 200px;
+    top: 0px;
+  }
+
+  .lric_list {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 105%;
+  }
+
+  .lric_list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .lric_list li {
+    font-size: 12px;
+    color: #333;
+    height: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 580px;
+    padding-left: 150px;
+  }
+  
 .disc {
+    position: absolute;
+    left: 73px;
+    top: 60px;
+    z-index: 9;
+  }
+
+.disc1 {
   position: absolute;
-  left: 73px;
-  top: 60px;
+  left: 5px;
+  top: 5px;
+  height: 50px;
+  width: 50px;
   z-index: 9;
 }
+.cover1 {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 75px;
+    z-index: 8;
+  }
+
 .cover {
   position: absolute;
   left: 125px;
@@ -259,10 +292,27 @@ dd {
   transform-origin: 12px 12px;
   transition: 1s;
 }
+
+.play_bar1 {
+    position: absolute;
+    left: 25px;
+    top: -6px;
+    z-index: 10;
+    width: 20px;
+    height: 40px;
+    transform: rotate(-25deg);
+    transform-origin: 12px 12px;
+    transition: 1s;
+  }
+
 /* 播放杆 转回去 */
-.player_con.playing .play_bar {
+.player_con .playing .play_bar {
   transform: rotate(0);
 }
+
+.player_con1 .playing .play_bar1 {
+    transform: rotate(0);
+  }
 
 /* 旋转的动画 */
 @keyframes Rotate {
@@ -281,9 +331,23 @@ dd {
   animation-timing-function: linear;
   animation-duration: 5s;
 }
+
+.autoRotate1 {
+    animation-name: Rotate;
+    animation-iteration-count: infinite;
+    animation-play-state: paused;
+    animation-timing-function: linear;
+    animation-duration: 5s;
+  }
 /* 是否正在播放 */
 .player_con.playing .disc,
 .player_con.playing .cover {
+  animation-play-state: running;
+}
+
+/* 是否正在播放 */
+.player_con1.playing .disc1,
+.player_con1.playing .cover1 {
   animation-play-state: running;
 }
 
@@ -326,10 +390,10 @@ dd {
 }
 
 .comment_wrapper dt img {
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-  }
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
 
 .comment_wrapper dd {
   font-size: 12px;
@@ -387,32 +451,32 @@ dd {
 }
 
 .video_con video {
-    position: fixed;
-    width: 800px;
-    height: 546px;
-    left: 50%;
-    top: 50%;
-    margin-top: -273px;
-    transform: translateX(-50%);
-    z-index: 990;
-  }
-  .video_con .mask {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 980;
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-  .video_con .shutoff {
-    position: fixed;
-    width: 40px;
-    height: 40px;
-    background: url("../images/shutoff.png") no-repeat;
-    left: 50%;
-    margin-left: 400px;
-    margin-top: -273px;
-    top: 50%;
-    z-index: 995;
-  }
+  position: fixed;
+  width: 800px;
+  height: 540px;
+  left: 50%;
+  top: 50%;
+  margin-top: -320px;
+  transform: translateX(-50%);
+  z-index: 990;
+}
+.video_con .mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 980;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.video_con .shutoff {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  background: url("../images/shutoff.png") no-repeat;
+  left: 50%;
+  margin-left: 400px;
+  margin-top: -273px;
+  top: 50%;
+  z-index: 995;
+}

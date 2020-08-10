@@ -36,12 +36,13 @@ var app = new Vue({
         musicList: [],
         // 歌词数组
         lyricList: [],
+        lyricListShow: [],
         //歌词时间
         timeList: [],
         // 歌曲地址
         musicUrl: "",
         // 歌曲封面
-        musicCover: "",
+        musicCover: "images/cover.png",
         // 搜索历史列表
         searchHistory: [],
         // 歌曲评论
@@ -58,21 +59,18 @@ var app = new Vue({
         mvUrl: "",
         timerFlag: false,
         //播放歌词的定时器
-        mInterval: ""
+        mInterval: "",
+        //中间部分显示控制
+        center_content:2
     },
     methods: {
         // 歌曲搜索
         searchMusic: function () {
             var that = this;
-            console.log(this.query, typeof (this.query));
             that.searchHistory.push(this.query);
+            that.searchHistory = Array.from(new Set(that.searchHistory));
             console.log(that.searchHistory);
-            that.searchHistory = Array.from(that.unique(that.searchHistory));
-
-            // 去重
-           // that.searchHistory = Array.from(new Set(that.searchHistory));
-            console.log(that.searchHistory);
-            axios.get("https://autumnfish.cn/search?keywords=" + this.query).then(
+            axios.get("https://autumnfish.cn/search?keywords=" + that.query).then(
                 function (response) {
                     console.log(response);
                     that.musicList = response.data.result.songs;
@@ -140,12 +138,18 @@ var app = new Vue({
                 function (err) { }
             );
         },
+        switch_content: function(num) {
+            console.log(num,typeof(num));
+            this.center_content = num;
+            console.log(this.center_content);
+        },
+
         changColor: function (classID, srcContent, internal) {
             var that = this;
             var len = 0;
             // 获取源内容
             //var srcContent = document.getElementById(classID).innerText; 
-            console.log(srcContent, srcContent.length);
+            //console.log(srcContent, srcContent.length);
             // 前半部分
             var front = "";
             // 后半部分
@@ -163,14 +167,14 @@ var app = new Vue({
                 } else {
                     rear = rear.substr(1, rear.length);
                 }
-                console.log(front);
-                console.log(rear);
+                //console.log(front);
+                //console.log(rear);
                 document.getElementById(classID).innerHTML = '<font style="color: #1eacda" v-show="isPlaying">' + front + '</font>' + rear + '</div>';
                 //document.getElementById(classID).innerHTML = '<p id="lrc1" class="lrc1" v-show="isPlaying"></p>';id="lrc1" class="lrc1" v-show="isPlaying"
                 len++;
             }, 900 * internal / srcContent.length);//每个字的速度可以稍微快一些
         },
-
+        
         // 歌曲播放
         play: function () {
             var that = this;
@@ -180,26 +184,35 @@ var app = new Vue({
             // myaudio这个ID要能在HTML上可以找到
             var audio = document.getElementById("myaudio");
             var i = 0;
-            console.log(this.lyricList, that.timeList);
-            audio.ontimeupdate = function () {
+           // console.log(this.lyricList, that.timeList);
+            audio.ontimeupdate = function () {  
+                this.isPlaying = true;
+                if (i<6) {
+                    that.lyricListShow=that.lyricList.slice(0,11);
+                } else {
+                    that.lyricListShow=that.lyricList.slice(i-6,7+i);
+                }
+                console.log(that.lyricListShow[i]);
+                that.lyricListShow[i]='<p style="background-color: #1eacda">'+that.lyricListShow[i]+'</p>';
+                console.log(that.lyricListShow[i]);
                 if (that.isPlaying) {
                     var timeDisplay = audio.currentTime;
-                    console.log(i, that.timerFlag, timeDisplay, that.timeList[i + 2]);
+                   // console.log(i, that.timerFlag, timeDisplay, that.timeList[i + 2]);
                     // 注意判断的时候 两边的数据类型
                     if (timeDisplay > that.timeList[i] && timeDisplay < that.timeList[i + 2]) {
                         that.lrc1 = that.lyricList[i];
                         that.lrc2 = that.lyricList[i + 1];
                         // 上面一行
                         if (!that.timerFlag && timeDisplay > that.timeList[i] && timeDisplay < that.timeList[i + 1]) {
-                            console.log(that.lrc1);
+                            //console.log(that.lrc1);
                             that.timerFlag = true;
                             that.changColor("lrc1", that.lrc1, that.timeList[i + 1] - that.timeList[i]);
-                            console.log(that.timeList[i + 1] - that.timeList[i]);
+                            //console.log(that.timeList[i + 1] - that.timeList[i]);
                         } else if (!that.timerFlag) {
-                            console.log(that.lrc2);
+                            //console.log(that.lrc2);
                             that.timerFlag = true;
                             that.changColor("lrc2", that.lrc2, that.timeList[i + 2] - that.timeList[i + 1]);
-                            console.log(that.timeList[i + 2] - that.timeList[i + 1]);
+                            //console.log(that.timeList[i + 2] - that.timeList[i + 1]);
                         }
                     } else {
                         i = i + 2;
@@ -212,7 +225,17 @@ var app = new Vue({
             };
         },
 
-
+        changlyric: function (index) {
+            this.isPlaying = true;
+            var that =this;
+            if (index<5) {
+                that.lyricListShow=that.lyricList.slice(0,10);
+                console.log(that.lyricListShow);
+            } else {
+                that.lyricListShow=that.lyricList.slice(index-5,5+index);
+                console.log(that.lyricListShow);
+            }
+        },
         // 歌曲暂停
         pause: function () {
             // console.log("pause");
