@@ -40,8 +40,8 @@
                     <img src="images/player_bar.png" class="play_bar" />
                     <img src="images/disc.png" class="disc autoRotate" @click='switch_content(2)'/>
                     <img :src="musicCover" class="cover autoRotate"/>
-                    <font id="lrc1" class="lrc1" v-show="isPlaying"></font>
-                    <font id="lrc2" class="lrc2" v-show="isPlaying"></font>
+                    <div class="lrc1" v-html="lrc1" v-show="isPlaying"></div>
+                    <div class="lrc2" v-html="lrc2" v-show="isPlaying"></div>
                 </div>
                  <!--歌曲信息1-->
                 <div class="player_con1" :class="{playing:isPlaying}" v-show="center_content==2">

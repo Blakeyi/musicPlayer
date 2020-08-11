@@ -61,7 +61,7 @@ var app = new Vue({
         //播放歌词的定时器
         mInterval: "",
         //中间部分显示控制
-        center_content:2
+        center_content:1
     },
     methods: {
         // 歌曲搜索
@@ -114,7 +114,9 @@ var app = new Vue({
                     for (var i in temp) {
                         medisArray[i] = temp[i].substring(temp[i].indexOf("[") + 1, temp[i].indexOf("]"));
                         medisArray1[i] = temp[i].substring(temp[i].indexOf("]") + 1, temp[i].length);
-                        // console.log(medisArray[i]);
+                        //console.log(medisArray1[i].length, medisArray1[i]);
+                        medisArray1[i] = medisArray1[i].replace(/\s*/g,'');
+                        //console.log(medisArray1[i].length, medisArray1[i]);
                         var timeT = medisArray[i].split(".")[0];
                         var timeT1 = timeT.split(":");
                         // console.log(Number(timeT1[0]),Number(timeT1[1]));
@@ -144,7 +146,10 @@ var app = new Vue({
             console.log(this.center_content);
         },
 
-        changColor: function (classID, srcContent, internal) {
+        changColor: function (num, srcContent, internal) {
+            if (srcContent.length == 0) {
+                return;
+            }
             var that = this;
             var len = 0;
             // 获取源内容
@@ -155,23 +160,29 @@ var app = new Vue({
             // 后半部分
             var rear = srcContent;
             //定时器输出
-            this.mInterval = setInterval(function () {
-                //console.log(len);
-                if (len > srcContent.length - 2 || !that.isPlaying) {
+            that.mInterval = setInterval(function () {
+               // console.log(len,front.length,rear.length);
+                if (len > srcContent.length-1|| !that.isPlaying) {
+                   // console.log(len,srcContent.length-1);
                     that.timerFlag = false;
                     clearInterval(that.mInterval);
+                    that.mInterval="";
+                    
                 }
                 front += srcContent[len];
-                if (rear.length == 1) {
-                    rear = "";
-                } else {
-                    rear = rear.substr(1, rear.length);
-                }
-                //console.log(front);
-                //console.log(rear);
-                document.getElementById(classID).innerHTML = '<font style="color: #1eacda" v-show="isPlaying">' + front + '</font>' + rear + '</div>';
-                //document.getElementById(classID).innerHTML = '<p id="lrc1" class="lrc1" v-show="isPlaying"></p>';id="lrc1" class="lrc1" v-show="isPlaying"
+                rear = srcContent.slice(len+1,srcContent.length);
                 len++;
+               // console.log(len,front.length,rear.length);
+                if(num % 2 == 0) { //偶数显示下面那一句
+                   that.lrc2 = '<b style="color: #1eacda">' + front + '</b> <b>' + rear + '</b>';
+                    //that.lrc2 = '<b style="color: #1eacda">'+that.lyricListShow[i]+'</b>'
+                    //console.log(that.lrc2);
+                } else {
+                    that.lrc1 = '<b style="color: #1eacda">' + front + '</b> <b>' + rear + '</b>'; 
+                   // console.log(that.lrc1);
+                }
+                //document.getElementById(classID).innerHTML = '<p v-show="isPlaying">' + front + '</p>' + rear + '</div>';
+                //document.getElementById(classID).innerHTML = '<p id="lrc1" class="lrc1" v-show="isPlaying"></p>';id="lrc1" class="lrc1" v-show="isPlaying"
             }, 900 * internal / srcContent.length);//每个字的速度可以稍微快一些
         },
         
@@ -184,57 +195,43 @@ var app = new Vue({
             // myaudio这个ID要能在HTML上可以找到
             var audio = document.getElementById("myaudio");
             var i = 0;
-           // console.log(this.lyricList, that.timeList);
+           console.log(this.lyricList);
             audio.ontimeupdate = function () {  
                 this.isPlaying = true;
                 if (i<6) {
                     that.lyricListShow=that.lyricList.slice(0,11);
+                    that.lyricListShow[i]='<p style="color: #1eacda;text-align:center">'+that.lyricListShow[i]+'</p>';
                 } else {
-                    that.lyricListShow=that.lyricList.slice(i-6,7+i);
+                    console.log(i-5,i+6,that.lyricListShow)
+                    that.lyricListShow=that.lyricList.slice(i-5,6+i);
+                    that.lyricListShow[5]='<p style="color: #1eacda;font-size:17px;text-align: center">'+that.lyricListShow[5]+'</p>';
                 }
-                console.log(that.lyricListShow[i]);
-                that.lyricListShow[i]='<p style="background-color: #1eacda">'+that.lyricListShow[i]+'</p>';
-                console.log(that.lyricListShow[i]);
+                //console.log(that.lyricListShow[i]);
+                console.log(i, that.lyricListShow[i]);
+               // console.log(that.lyricListShow[i]);
                 if (that.isPlaying) {
                     var timeDisplay = audio.currentTime;
-                   // console.log(i, that.timerFlag, timeDisplay, that.timeList[i + 2]);
+                   // console.log(i, that.timerFlag, timeDisplay, that.timeList[i + 1]);
                     // 注意判断的时候 两边的数据类型
-                    if (timeDisplay > that.timeList[i] && timeDisplay < that.timeList[i + 2]) {
-                        that.lrc1 = that.lyricList[i];
-                        that.lrc2 = that.lyricList[i + 1];
+                    if (timeDisplay > that.timeList[i] && timeDisplay < that.timeList[i + 1]) {
                         // 上面一行
                         if (!that.timerFlag && timeDisplay > that.timeList[i] && timeDisplay < that.timeList[i + 1]) {
                             //console.log(that.lrc1);
                             that.timerFlag = true;
-                            that.changColor("lrc1", that.lrc1, that.timeList[i + 1] - that.timeList[i]);
-                            //console.log(that.timeList[i + 1] - that.timeList[i]);
-                        } else if (!that.timerFlag) {
-                            //console.log(that.lrc2);
-                            that.timerFlag = true;
-                            that.changColor("lrc2", that.lrc2, that.timeList[i + 2] - that.timeList[i + 1]);
-                            //console.log(that.timeList[i + 2] - that.timeList[i + 1]);
-                        }
+                            that.changColor(i, that.lyricList[i], that.timeList[i + 1] - that.timeList[i]);
+                            //console.log(i, that.lyricList[i],that.timeList[i + 1] - that.timeList[i]);
+                        } 
+
                     } else {
-                        i = i + 2;
+                        i++;
                         that.timerFlag = false;
                         clearInterval(that.mInterval);
                     }
-                } else {
-                    return;
+                }else {
+                    that.timerFlag = false;
+                    clearInterval(that.mInterval);
                 }
             };
-        },
-
-        changlyric: function (index) {
-            this.isPlaying = true;
-            var that =this;
-            if (index<5) {
-                that.lyricListShow=that.lyricList.slice(0,10);
-                console.log(that.lyricListShow);
-            } else {
-                that.lyricListShow=that.lyricList.slice(index-5,5+index);
-                console.log(that.lyricListShow);
-            }
         },
         // 歌曲暂停
         pause: function () {
