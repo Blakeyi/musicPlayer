@@ -49,7 +49,7 @@
                 <div class="player_con" :class="{playing:isPlaying}" v-show="center_content==1">
                     <img src="images/player_bar.png" class="play_bar" />
                     <img src="images/disc.png" class="disc autoRotate" @click='switch_content(2)'/>
-                    <img :src="musicCover" class="cover autoRotate"/>
+                    <img :src="musicCover" class="cover autoRotate"  @click='switch_content(2)'/>
                     <!--显示歌词-->
                     <div class="lrc1" v-html="lrc1" v-show="isPlaying"></div>
                     <div class="lrc2" v-html="lrc2" v-show="isPlaying"></div>
@@ -58,13 +58,31 @@
                 <div class="player_con1" :class="{playing:isPlaying}" v-show="center_content==2">
                     <img src="images/player_bar.png" class="play_bar1" />
                     <img src="images/disc.png" class="disc1 autoRotate1" @click='switch_content(1)'/>
-                    <img :src="musicCover" class="cover1 autoRotate1"/>
+                    <img :src="musicCover" class="cover1 autoRotate1" @click='switch_content(1)'/>
                      <!--显示歌词-->
                     <div class="lric_list">
                         <li v-for="item in lyricListShow">
                             <b v-html="item"></b>
                         </li>
                     </div>
+                </div>
+                 <!--专辑信息-->
+                 <div class="player_con2" v-show="center_content==3" >
+                        <!--网络查询的音乐列表-->
+                            <li v-for="(item,index) in albumImgList">
+                                <img :src="item">
+                              <!--<p>{{albumNameList[index]}}</p>--> 
+                            </li>
+                            <!--<li><img src="./img/6.jpg"></li>
+                            <li><img src="./img/1.jpg"></li>
+                            <li><img src="./img/2.jpg"></li>
+                            <li><img src="./img/3.jpg"></li>
+                            <li><img src="./img/4.jpg"></li>
+                            <li><img src="./img/5.jpg"></li>
+                            <li><img src="./img/7.jpg"></li>
+                            <li><img src="./img/8.jpg"></li>
+                            <li><img src="./img/9.jpg"></li>-->
+
                 </div>
                 <!--评论容器-->
                 <div class="comment_wrapper" ref='comment_wrapper'>

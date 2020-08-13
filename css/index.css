@@ -14,7 +14,6 @@ dd {
   height: 100%;
   background: url("../images/bg.jpg") no-repeat;
   background-size: 100% 100%;
- 
 }
 
 .play_wrap {
@@ -112,22 +111,22 @@ option {
 }
 
 .song_wrapper .icon_network {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    left: 50px;
-    top: 0px;
-    z-index: l;
-  }
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 50px;
+  top: 0px;
+  z-index: l;
+}
 
-  .song_wrapper .icon_local {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    right:50px;
-    top: 0px;
-    z-index: l;
-  }
+.song_wrapper .icon_local {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 50px;
+  top: 0px;
+  z-index: l;
+}
 
 .song_stretch {
   width: 600px;
@@ -211,7 +210,7 @@ option {
   top: 0;
   cursor: pointer;
 }
-
+/*显示底部歌词*/
 .player_con {
   width: 400px;
   height: 435px;
@@ -226,7 +225,7 @@ option {
   left: 10px;
   display: flex;
   font-weight: bold;
-  color:floralwhite;
+  color: floralwhite;
 }
 
 .player_con .lrc2 {
@@ -235,45 +234,80 @@ option {
   right: 10px;
   display: flex;
   font-weight: bold;
-  color:floralwhite;
+  color: floralwhite;
 }
 
+/*显示全屏歌词*/
 .player_con1 {
-    width: 400px;
-    height: 435px;
-    position: absolute;
-    left: 200px;
-    top: 0px;
-  }
+  width: 400px;
+  height: 435px;
+  position: absolute;
+  left: 200px;
+  top: 0px;
+}
 
-  .lric_list {
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 105%;
-  }
+/*显示专辑页面*/
+.player_con2 {
+  width: 400px;
+  height: 435px;
+  position: absolute;
+  left: 200px;
+  top: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
 
-  .lric_list::-webkit-scrollbar {
+}
+.player_con2::-webkit-scrollbar {
     display: none;
   }
-  
-  .lric_list li {
-    font-size: 12px;
-    color: #333;
-    height: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    width: 580px;
-    padding-left: 125px;
+
+.player_con2 li {
+    padding: 6px;
+    display: inline;
+    list-style: none;
+    transition: 1s all;
   }
   
+.player_con2 li img {
+    margin-top: 10px;
+    margin-left: 5px;
+    width: 28%;
+    height: 28%;
+  }
+
+.player_con2 li p {
+    margin-top: 10px;
+    margin-left: 5px;
+  }
+
+.lric_list {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 105%;
+}
+
+.lric_list::-webkit-scrollbar {
+  display: none;
+}
+
+.lric_list li {
+  font-size: 12px;
+  color: #333;
+  height: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 580px;
+  padding-left: 125px;
+}
+
 .disc {
-    position: absolute;
-    left: 73px;
-    top: 60px;
-    z-index: 9;
-  }
+  position: absolute;
+  left: 73px;
+  top: 60px;
+  z-index: 9;
+}
 
 .disc1 {
   position: absolute;
@@ -284,14 +318,14 @@ option {
   z-index: 9;
 }
 .cover1 {
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    width: 50px;
-    height: 50px;
-    border-radius: 75px;
-    z-index: 8;
-  }
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 75px;
+  z-index: 8;
+}
 
 .cover {
   position: absolute;
@@ -314,25 +348,25 @@ option {
 }
 
 .play_bar1 {
-    position: absolute;
-    left: 25px;
-    top: -6px;
-    z-index: 10;
-    width: 20px;
-    height: 40px;
-    transform: rotate(-25deg);
-    transform-origin: 12px 12px;
-    transition: 1s;
-  }
+  position: absolute;
+  left: 25px;
+  top: -6px;
+  z-index: 10;
+  width: 20px;
+  height: 40px;
+  transform: rotate(-15deg);
+  transform-origin: 12px 12px;
+  transition: 1s;
+}
 
 /* 播放杆 转回去 */
-.player_con .playing .play_bar {
+.player_con.playing .play_bar {
   transform: rotate(0);
 }
 
-.player_con1 .playing .play_bar1 {
-    transform: rotate(0);
-  }
+.player_con1.playing .play_bar1 {
+  transform: rotate(0);
+}
 
 /* 旋转的动画 */
 @keyframes Rotate {
@@ -353,12 +387,12 @@ option {
 }
 
 .autoRotate1 {
-    animation-name: Rotate;
-    animation-iteration-count: infinite;
-    animation-play-state: paused;
-    animation-timing-function: linear;
-    animation-duration: 5s;
-  }
+  animation-name: Rotate;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+  animation-timing-function: linear;
+  animation-duration: 5s;
+}
 /* 是否正在播放 */
 .player_con.playing .disc,
 .player_con.playing .cover {
