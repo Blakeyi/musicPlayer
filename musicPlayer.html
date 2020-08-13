@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <title>悦听音乐播放器</title>
     <link rel="stylesheet" href="./css/index.css">
 </head>
 
@@ -16,7 +16,7 @@
             <div class="search_bar">
                 <img src="images/player_title.png" alt="" />
                 <input type="text" autocomplete="on" list="url_list" v-model='query' @keyup.enter="searchMusic()" />
-                <datalist id="url_list">
+                <datalist id="url_list"><!--输入框历史记录-->
                     <option v-for="(item,index) in searchHistory"> {{item}}</option> 
                 </datalist>
             </div>
@@ -24,13 +24,23 @@
             <div class="center_content">
                 <!--歌曲列表-->
                 <div class='song_wrapper' ref='song_wrapper'>
+                    <img class="icon_network" v-if="model==1" src="images/network1.png" title="网络" ><!--带颜色的图标-->
+                    <img class="icon_network" v-if="model==0" src="images/network.png"  title="网络" @click='changeModel(1)'>
+                    <img class="icon_local" v-if="model==0" src="images/local1.png" title="本地" ><!--带颜色的图标-->
+                    <img class="icon_local" v-if="model==1" src="images/local.png" title="本地" @click='changeModel(0)' >
                     <ul class="song_list">
-                        <li v-for="item in musicList">
+                        <!--网络查询的音乐列表-->
+                        <li v-for="item in musicList" v-if="model==1">
                             <a href="javascript:;" @click='playMusic(item.id)'></a>
                             <b>{{item.name}}</b>
                             <span>
                                 <i @click='playMv(item.mvid)' v-if="item.mvid!=0"></i>
                             </span>
+                        </li>
+                         <!--本地的音乐列表-->
+                        <li v-for="item in localMusicList" v-if="model==0">
+                            <a href="javascript:;" @click='playMusic("music/"+item+".mp3")'></a>
+                            <b>{{item}}</b>
                         </li>
                     </ul>
                     <img src="images/line.png" class="switch_btn" alt="">
@@ -40,6 +50,7 @@
                     <img src="images/player_bar.png" class="play_bar" />
                     <img src="images/disc.png" class="disc autoRotate" @click='switch_content(2)'/>
                     <img :src="musicCover" class="cover autoRotate"/>
+                    <!--显示歌词-->
                     <div class="lrc1" v-html="lrc1" v-show="isPlaying"></div>
                     <div class="lrc2" v-html="lrc2" v-show="isPlaying"></div>
                 </div>
@@ -48,6 +59,7 @@
                     <img src="images/player_bar.png" class="play_bar1" />
                     <img src="images/disc.png" class="disc1 autoRotate1" @click='switch_content(1)'/>
                     <img :src="musicCover" class="cover1 autoRotate1"/>
+                     <!--显示歌词-->
                     <div class="lric_list">
                         <li v-for="item in lyricListShow">
                             <b v-html="item"></b>
@@ -72,7 +84,7 @@
                 </div>
             </div>
             <div class="audio_con">
-        <audio id="myaudio" ref='audio' @play="play" @pause="pause" @ :src="musicUrl" controls="controls" autoplay  loop class="myaudio" ></audio>     
+        <audio id="myaudio" ref='audio' @play="play" @pause="pause" @ :src="musicUrl" controls="controls" autoplay class="myaudio" ></audio>     
         </div>
         <div class="video_con" v-show="showVideo">
             <video ref='video' :src="mvUrl" controls="controls"></video>

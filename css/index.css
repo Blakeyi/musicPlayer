@@ -111,6 +111,24 @@ option {
   z-index: l;
 }
 
+.song_wrapper .icon_network {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 50px;
+    top: 0px;
+    z-index: l;
+  }
+
+  .song_wrapper .icon_local {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right:50px;
+    top: 0px;
+    z-index: l;
+  }
+
 .song_stretch {
   width: 600px;
 }
@@ -119,7 +137,8 @@ option {
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 105%;
+  margin-top: 10px;
+  height: 106%;
 }
 
 .song_list::-webkit-scrollbar {
@@ -129,7 +148,7 @@ option {
 .song_list li {
   font-size: 12px;
   color: #333;
-  height: 40px;
+  height: 35px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

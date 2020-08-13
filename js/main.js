@@ -61,10 +61,18 @@ var app = new Vue({
         //播放歌词的定时器
         mInterval: "",
         //中间部分显示控制
-        center_content:1
+        center_content: 1,
+        //播放模式，默认为本地模式为0
+        model: 0,//
+        localMusicList:["不分手的恋爱","巴赫旧约","累不累","等不到你","放不下",
+        "好安静","苦笑","灵主不悔","七月七日晴","一辈子的孤单","说散就散","分手季节"]
     },
     methods: {
-        // 歌曲搜索
+        // 页面加载完自动执行函数
+        created: function () {
+            console.log("自动执行");
+        },
+
         searchMusic: function () {
             var that = this;
             that.searchHistory.push(this.query);
@@ -74,6 +82,7 @@ var app = new Vue({
                 function (response) {
                     console.log(response);
                     that.musicList = response.data.result.songs;
+                    that.model = 1;
                     console.log(response.data.result.songs);
                 },
                 function (err) { }
@@ -83,15 +92,22 @@ var app = new Vue({
         playMusic: function (musicId) {
             console.log(musicId);
             var that = this;
-            // 获取歌曲地址
+            if(that.model==1){
+                 // 获取歌曲地址
             axios.get("https://autumnfish.cn/song/url?id=" + musicId).then(
                 function (response) {
                     // console.log(response);
-                    // console.log(response.data.data[0].url);
                     that.musicUrl = response.data.data[0].url;
+                    console.log(that.musicUrl);
                 },
                 function (err) { }
             );
+            } else {
+                that.musicUrl = musicId;
+                console.log(that.musicUrl);
+
+            }
+           
 
             // 歌曲详情获取
             axios.get("https://autumnfish.cn/song/detail?ids=" + musicId).then(
@@ -115,7 +131,7 @@ var app = new Vue({
                         medisArray[i] = temp[i].substring(temp[i].indexOf("[") + 1, temp[i].indexOf("]"));
                         medisArray1[i] = temp[i].substring(temp[i].indexOf("]") + 1, temp[i].length);
                         //console.log(medisArray1[i].length, medisArray1[i]);
-                        medisArray1[i] = medisArray1[i].replace(/\s*/g,'');
+                        medisArray1[i] = medisArray1[i].replace(/\s*/g, '');
                         //console.log(medisArray1[i].length, medisArray1[i]);
                         var timeT = medisArray[i].split(".")[0];
                         var timeT1 = timeT.split(":");
@@ -140,8 +156,8 @@ var app = new Vue({
                 function (err) { }
             );
         },
-        switch_content: function(num) {
-            console.log(num,typeof(num));
+        switch_content: function (num) {
+            console.log(num, typeof (num));
             this.center_content = num;
             console.log(this.center_content);
         },
@@ -161,31 +177,36 @@ var app = new Vue({
             var rear = srcContent;
             //定时器输出
             that.mInterval = setInterval(function () {
-               // console.log(len,front.length,rear.length);
-                if (len > srcContent.length-1|| !that.isPlaying) {
-                   // console.log(len,srcContent.length-1);
+                // console.log(len,front.length,rear.length);
+                if (len > srcContent.length - 1 || !that.isPlaying) {
+                    // console.log(len,srcContent.length-1);
                     that.timerFlag = false;
                     clearInterval(that.mInterval);
-                    that.mInterval="";
-                    
+                    that.mInterval = "";
+
                 }
                 front += srcContent[len];
-                rear = srcContent.slice(len+1,srcContent.length);
+                rear = srcContent.slice(len + 1, srcContent.length);
                 len++;
-               // console.log(len,front.length,rear.length);
-                if(num % 2 == 0) { //偶数显示下面那一句
-                   that.lrc2 = '<b style="color: #1eacda">' + front + '</b> <b>' + rear + '</b>';
+                // console.log(len,front.length,rear.length);
+                if (num % 2 == 0) { //偶数显示下面那一句
+                    that.lrc2 = '<b style="color: #1eacda">' + front + '</b> <b>' + rear + '</b>';
                     //that.lrc2 = '<b style="color: #1eacda">'+that.lyricListShow[i]+'</b>'
                     //console.log(that.lrc2);
                 } else {
-                    that.lrc1 = '<b style="color: #1eacda">' + front + '</b> <b>' + rear + '</b>'; 
-                   // console.log(that.lrc1);
+                    that.lrc1 = '<b style="color: #1eacda">' + front + '</b> <b>' + rear + '</b>';
+                    // console.log(that.lrc1);
                 }
                 //document.getElementById(classID).innerHTML = '<p v-show="isPlaying">' + front + '</p>' + rear + '</div>';
                 //document.getElementById(classID).innerHTML = '<p id="lrc1" class="lrc1" v-show="isPlaying"></p>';id="lrc1" class="lrc1" v-show="isPlaying"
             }, 900 * internal / srcContent.length);//每个字的速度可以稍微快一些
         },
-        
+
+        changeModel: function (modelNum) {
+            console.log(modelNum);
+            this.model = Number(modelNum);
+
+        },
         // 歌曲播放
         play: function () {
             var that = this;
@@ -195,23 +216,23 @@ var app = new Vue({
             // myaudio这个ID要能在HTML上可以找到
             var audio = document.getElementById("myaudio");
             var i = 0;
-           console.log(this.lyricList);
-            audio.ontimeupdate = function () {  
+            console.log(this.lyricList);
+            audio.ontimeupdate = function () {
                 this.isPlaying = true;
-                if (i<6) {
-                    that.lyricListShow=that.lyricList.slice(0,11);
-                    that.lyricListShow[i]='<p style="color: #1eacda;text-align:center">'+that.lyricListShow[i]+'</p>';
+                if (i < 6) {
+                    that.lyricListShow = that.lyricList.slice(0, 11);
+                    that.lyricListShow[i] = '<p style="color: #1eacda;text-align:center">' + that.lyricListShow[i] + '</p>';
                 } else {
-                    console.log(i-5,i+6,that.lyricListShow)
-                    that.lyricListShow=that.lyricList.slice(i-5,6+i);
-                    that.lyricListShow[5]='<p style="color: #1eacda;font-size:17px;text-align: center">'+that.lyricListShow[5]+'</p>';
+                    console.log(i - 5, i + 6, that.lyricListShow)
+                    that.lyricListShow = that.lyricList.slice(i - 5, 6 + i);
+                    that.lyricListShow[5] = '<p style="color: #1eacda;font-size:17px;text-align: center">' + that.lyricListShow[5] + '</p>';
                 }
                 //console.log(that.lyricListShow[i]);
                 console.log(i, that.lyricListShow[i]);
-               // console.log(that.lyricListShow[i]);
+                // console.log(that.lyricListShow[i]);
                 if (that.isPlaying) {
                     var timeDisplay = audio.currentTime;
-                   // console.log(i, that.timerFlag, timeDisplay, that.timeList[i + 1]);
+                    // console.log(i, that.timerFlag, timeDisplay, that.timeList[i + 1]);
                     // 注意判断的时候 两边的数据类型
                     if (timeDisplay > that.timeList[i] && timeDisplay < that.timeList[i + 1]) {
                         // 上面一行
@@ -220,14 +241,14 @@ var app = new Vue({
                             that.timerFlag = true;
                             that.changColor(i, that.lyricList[i], that.timeList[i + 1] - that.timeList[i]);
                             //console.log(i, that.lyricList[i],that.timeList[i + 1] - that.timeList[i]);
-                        } 
+                        }
 
                     } else {
                         i++;
                         that.timerFlag = false;
                         clearInterval(that.mInterval);
                     }
-                }else {
+                } else {
                     that.timerFlag = false;
                     clearInterval(that.mInterval);
                 }
@@ -263,4 +284,7 @@ var app = new Vue({
             this.showHistory = false;
         }
     },
+    mounted: function () {
+        this.created();
+    }
 });
