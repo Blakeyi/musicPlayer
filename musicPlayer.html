@@ -23,6 +23,14 @@
             <!-- 内容显示区域-->
             <div class="center_content">
                 <!--歌曲列表-->
+                <div class="leftArrow" >
+                    <img src="images/leftArrow1.png" v-if="center_content==1" @click='switch_content1(-1)'>
+                    <img src="images/leftArrow.png" v-if="center_content!=1" @click='switch_content1(-1)'>
+                </div>
+                <div class="rightArrow" >
+                    <img src="images/leftArrow1.png" v-if="center_content==3" @click='switch_content1(1)'>
+                    <img src="images/leftArrow.png" v-if="center_content!=3"@click='switch_content1(1)'>
+                </div>
                 <div class='song_wrapper' ref='song_wrapper'>
                     <img class="icon_network" v-if="model==1" src="images/network1.png" title="网络" ><!--带颜色的图标-->
                     <img class="icon_network" v-if="model==0" src="images/network.png"  title="网络" @click='changeModel(1)'>
@@ -70,7 +78,7 @@
                  <div class="player_con2" v-show="center_content==3" >
                         <!--网络查询的音乐列表-->
                             <li v-for="(item,index) in albumImgList">
-                                <img :src="item">
+                                <img :src="item" @click='searchAlbumMusic(index)'>
                               <!--<p>{{albumNameList[index]}}</p>--> 
                             </li>
                             <!--<li><img src="./img/6.jpg"></li>

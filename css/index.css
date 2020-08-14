@@ -98,6 +98,30 @@ option {
   position: relative;
 }
 
+.center_content .leftArrow{
+    margin-left: 195px;
+    margin-top: 200px;
+    z-index:3;
+}
+
+.center_content .leftArrow img{
+    width: 20px;
+    height: 20px;
+    z-index:3;
+}
+
+.center_content .rightArrow {
+    margin-left: 370px;
+    margin-top: 200px;
+    z-index:3;
+}
+
+.center_content .rightArrow img {
+    width: 20px;
+    height: 20px;
+    transform: rotate(-180deg);
+    z-index:3;
+}
 .song_wrapper {
   width: 200px;
   height: 435px;
@@ -262,7 +286,7 @@ option {
   }
 
 .player_con2 li {
-    padding: 6px;
+    padding: 5px;
     display: inline;
     list-style: none;
     transition: 1s all;
@@ -270,7 +294,7 @@ option {
   
 .player_con2 li img {
     margin-top: 10px;
-    margin-left: 5px;
+    margin-left: 8px;
     width: 28%;
     height: 28%;
   }

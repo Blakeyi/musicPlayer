@@ -61,7 +61,7 @@ var app = new Vue({
         //播放歌词的定时器
         mInterval: "",
         //中间部分显示控制
-        center_content: 3,
+        center_content: 1,
         //播放模式，默认为本地模式为0
         model: 0,//
         albumIDList: [],
@@ -85,11 +85,12 @@ var app = new Vue({
             //console.log(that.searchHistory);
             axios.get("https://autumnfish.cn/search?keywords=" + that.query).then(
                 function (response) {
-                    console.log(response);
+                   
                     that.musicList = response.data.result.songs;
+                    console.log(123,that.musicList);
                     that.model = 1;
                     var temp = response.data.result.songs;
-                    console.log("songs.length is ",temp.length);
+                    //console.log("songs.length is ",temp.length);
                     for (var i = 0; i < temp.length; i++) {
                         //console.log("temp[i].album.id is" ,temp[i].album.id);
                        // console.log("temp[i].album.name is" ,temp[i].album.name);
@@ -121,10 +122,29 @@ var app = new Vue({
 
             );
         },
+        //搜索专辑歌曲
+        searchAlbumMusic: function (i) {
+            console.log(i);
+            var that =this;
+            axios.get("https://autumnfish.cn/album?id=" + that.albumIDList[i]).then(
+                function (response) {
+                   that.albumMusic = response.data.songs;
+                   console.log(that.albumMusic);
+                   that.musicList = that.albumMusic;
+                  
+                },
+
+            );
+        },
+    
         // 歌曲播放
         playMusic: function (musicId) {
-            console.log(musicId);
-            console.log(this.albumImgList);
+            //console.log(musicId);
+            //console.log(this.albumImgList.length);
+            //去重
+            this.albumImgList = Array.from(new Set(this.albumImgList));
+            //console.log(this.albumIDList.length,  this.albumImgList.length, this.albumNameList.length);
+
             var that = this;
             if (that.model == 1) {
                 // 获取歌曲地址
@@ -191,9 +211,20 @@ var app = new Vue({
             );
         },
         switch_content: function (num) {
-            //console.log(num, typeof (num));
+            console.log(num, typeof (num));
             this.center_content = num;
             //console.log(this.center_content);
+        },
+        switch_content1: function (num) {
+            console.log(num, typeof (num));
+            if (num == -1 && this.center_content == 1) {
+
+            } else if (num == 1 && this.center_content == 3){
+
+            } else {
+                this.center_content += Number(num);
+                console.log(this.center_content);
+            }      
         },
 
         changColor: function (num, srcContent, internal) {
@@ -237,9 +268,7 @@ var app = new Vue({
         },
 
         changeModel: function (modelNum) {
-            //console.log(modelNum);
             this.model = Number(modelNum);
-
         },
         // 歌曲播放
         play: function () {
